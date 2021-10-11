@@ -27,7 +27,7 @@ let notifier = FreeSMSNotification(id: "12345678", key: "aBcd1E2FghIjKL", applic
 
 #### Envoi de la notification
 
-Une fois l'instance créé, vous aurez la possibilité d'envoyer votre notification de manière syncrone ou asynchrone.
+Une fois l'instance créé, vous aurez la possibilité d'envoyer votre notification de manière synchrone ou asynchrone.
 
 ##### Synchrone
 
@@ -68,7 +68,7 @@ La version asynchrone de *send()* est à la fois similaire et différente. Elle 
 Voici son prototype :
 
 ```swift
-public func send(_ message: String, timeout: Int = 0, withCompletionHandler completion: @escaping (Result<Any?, Errors>) -> Void)
+public func send(_ message: String, withCompletionHandler completion: @escaping (Result<Any?, Errors>) -> Void)
 ```
 Exemple:
 
@@ -105,7 +105,7 @@ struct bidule {
             
     func notify(_ message: String) {
         if let notifier = notifier {
-            notifier.send("My message") {
+            notifier.send(message) {
                 result in
                         
                 switch result {
@@ -180,6 +180,8 @@ notifier.send("Un autre message inutile") {
                 print("Votre message ne serait-il pas vide ?")
             case .unknown(let code):
                 print("Code d'erreur : \(code)")
+            default:
+                print("On va pas tous les faire")
         }
         
     }

@@ -126,7 +126,7 @@ public class FreeSMSNotification {
     }
     
     // MARK: Asynchronous
-    public func send(_ message: String, timeout: Int = 0, withCompletionHandler completion: @escaping (Result<Any?, Errors>) -> Void) {
+    public func send(_ message: String, withCompletionHandler completion: @escaping (Result<Any?, Errors>) -> Void) {
         
         // On ajoute le nom de l'application devant le message s'il existe
         var msg = ""
