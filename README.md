@@ -1,187 +1,67 @@
-# FreeSMSNotification (Swift version)
+# FreeSMSNotification
 
-## Installation :
-Ce module est un Swift Package. Il suffit donc de l'ajouter à votre projet directement dans Xcode : `File > Add Package` et d'entrer l'url du repo. /!\ **Veillez à bien choisir la branche *Swift*.** /!\
+L'opérateur Free Telecom met à disposition de ses abonnés mobiles une petite API permettant de s'envoyer des notifications par SMS.
+Il est ainsi possible d'envoyer des notifications SMS depuis n'importe quel script ou application que vous développez. N'importe où dans le monde. Gratuitement.
 
-## Utilisation
+T'as Free, t'as tout compris !
 
-Rien de plus simple :
+L'objectif de ce projet, c'est de transposer cette fonctionnalité directement dans le langage que vous utilisez pour votre projet. Sans avoir besoin d'en recréer la mécanique à chaque fois.
 
 
-#### Initialisation
+Installez le module correspondant et utilisez-le directement dans votre code.
 
-Il faut d'abord instancier un "notifier" qui est simplement la structure qui va contenir vos identifiants 
-et s'occuper d'envoyer la notification. 
-Ce dernier testera alors si la connexion est établie. Si c'est le cas vous recevrez un SMS le confirmant.
-Sinon, l'initialisation renverra nil.
+## Prérequis
 
-```swift
-import FreeSMSNotification
+- __L'utilisateur final doit être abonné à un forfait Free Mobile.__
 
-let notifier = FreeSMSNotification(id: "12345678", key: "aBcd1E2FghIjKL", application: "App Name")
+- __L'option doit être activée dans l'espace abonné__ :
+  https://mobile.free.fr/account/mes-options
 
-// Si ça marche vous aurez votre notifier. Et vous pourrez l'utiliser.
-// Sinon vous aurez nil. À vous de trouver quoi en faire.
+Activez l'option en cliquant sur la marque correspondante :
+![Activation](https://github.com/chalios/FreeSMSNotification/raw/main/images/Activ_option.png)
 
-```
+En cliquant sur l'onglet on obtient plus de détails sur l'option :
+![Details](https://github.com/chalios/FreeSMSNotification/raw/main/images/Options_details.png)
 
-#### Envoi de la notification
+Une fois l'option activée, la clé d'API devient accessible :
+![Activated](https://github.com/chalios/FreeSMSNotification/raw/main/images/Options_landing.png)
 
-Une fois l'instance créé, vous aurez la possibilité d'envoyer votre notification de manière syncrone ou asynchrone.
+## Dépôt
 
-##### Synchrone
+Ce dépôt est structuré de la manière suivante :
 
-La fonction *send()* synchrone est une fonction *throw*. Elle ne renvoie rien mais génère des erreurs s'il y en a. Ces erreurs doivent être gérées dans un do-catch.
+- La branche principale (*main*) est la "page d'accueil" du projet.
+- Chaque autre branche est dédiée à un module spécifique et donc généralement un langage.
 
-Elle prend 2 paramètres, dont 1 optionnel :
-    - message : qui est le contenu de la notification
-    - timeout : qui est la durée en secondes avant de renoncer à la requête. (Defaut: 0 -> 10 secondes)
-    
-    
-Voici son prototype :
+## Installation
 
-```swift
-public func send(_ message: String, timeout: Int = 0)
-```
+Rendez-vous dans la branche désirée pour obtenir la procédure d'installation spécifique.
 
-Exemple :
+Si vous clonez le dépôt, la commande `git checkout branche` vous permettra d'activer la branche indiquée.
 
-```swift
+## Contribution
 
-do {
-    try notifier.send("Mon super message")
-    
-    // OU
-    
-    try notifier.send("Mon super message", timeout: 3) // On modifie le timeout à 3 secondes
-    
-} catch {
-    print("Erreur. La notification n'a pu être envoyée")
-}
+Ce projet n'a pas une grande ampleur, ni un grand intérêt technologique. Son objectif est simplement de donner un coup de pouce à toute personne désireuse d'intégrer **facilement** ce type de notifications dans son propre code. Et ce, quelque soit le langage ou la plateforme.
 
-```
+Oui, c'est très restreint puisqu'il faut être abonné Free pour pouvoir en bénéficier.
 
-##### Asynchrone
+Mais ce n'est pas pour autant qu'il est inutile d'y contribuer.
+Que ce soit en signalant des bugs ou erreurs, en suggérant des améliorations, en développant ou corrigeant un module...
 
-La version asynchrone de *send()* est à la fois similaire et différente. Elle prend toujours 2 arguments, cette fois obligatoires. Mais elle ne *throw* pas. À la place elle renvoie un resultat de type Result à la closure passée en paramètre.
+Vous pouvez apporter la possibilité à d'autres (ou à vous-même) de réaliser de grandes choses à partir de petites pièces. Vous pouvez apprendre à développer vos compétences sur un projet simple. Ou encore faire sourire un inconnu en soutenant son projet.
 
-Voici son prototype :
+La contribution est donc libre et encouragée ! À vos Pull Requests !
 
-```swift
-public func send(_ message: String, timeout: Int = 0, withCompletionHandler completion: @escaping (Result<Any?, Errors>) -> Void)
-```
-Exemple:
+#### Les règles de développement d'un module
 
-```swift
+- [x] Il doit s'installer facilement. (Idéalement par un package manager : [swift package manager, npm, pip, ...])
+- [x] Il doit s'intégrer facilement. (Dans l'idéal, doit pouvoir s'intégrer dans tout projet existant sans modifications importantes.)
+- [x] Il doit être documenté. (Procédures d'installation, d'utilisation, exemple, code source commenté...)
 
-notifier.send("Mon super message") {
-    result in
-    
-    switch result {
-    case .success(_):
-        // Faites quelque chose. Ou pas.
-        return
-    case .failure(let error):
-        // Gérez les erreurs ici.
-    }
-}
+## Remerciements
 
-```
+Merci à Free Telecom.
 
-##### Exemple
+Ça n'est pas grand chose, la possibilité de s'envoyer soi-même des SMS. Mais c'est pourtant bien pratique. Et peu d'opérateurs, à l'heure où j'écris ces lignes, ne soutiennent autant les amateurs de technologie que Free. Tant par le matériel que les services. (Ils ont été jusqu'à intégrer la possibilité de faire tourner une VM directement sur la Freebox. Qui fait ça ?!)
 
-Utilisation du module au sein d'une structure :
-
-```swift
-
-import FreeSMSNotification
-
-struct bidule {
-    let notifier: FreeSMSNotification?
-    
-    init() {
-        notifier = FreeSMSNotification(id: "12345678", key: "aBcd1E2FghIjKL", application: "Hello, world!")
-    }
-            
-    func notify(_ message: String) {
-        if let notifier = notifier {
-            notifier.send("My message") {
-                result in
-                        
-                switch result {
-                case .success(_):
-                    return
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
-    }
-            
-            
-    func method() {
-        // Do something that may want to notify you
-        notify("Your notification")
-    }
-}
-```
-
-##### Erreurs
-
-Les erreurs sont rassemblées dans l'enum Errors du module : 
-
-```swift
-public enum Errors: Error {
-    case missingParameter          // Il manque un paramètre dans la requête (exemple: message vide)
-    case sendingTooFast            // Les notifications sont envoyées trop vite. Il y a un anti-flood.
-    case authenticationError       // Besoin d'expliquer ?
-    case serverError               // Erreur interne au serveur. (Requête mal formée ? Plantage serveur ?...)
-    case badMsgFormat              // Le message ne peut pas être encodé correctement
-    case requestTimeout            // Timeout atteint. Requête expirée.
-    case unknown(statusCode: Int)  // Erreur non répertoriée/documentée. Renvoie le status_code HTTP.
-}
-```
-
-Libre à vous de les gérer ou de les ignorer.
-
-Exemple do-catch:
-
-```swift
-do {
-    try notifier.send("Message qui n'arrivera pas")
-}
-catch FreeSMSNotifier.Errors.missingParameter {
-    print("Votre message ne serait-il pas vide ?")
-}
-catch FreeSMSNotifier.Errors.sendingTooFast {
-    print("Eh... Molo. On fait pas un DoS là...")
-}
-catch FreeSMSNotifier.Errors.unknown let code {
-    print("Code d'erreur HTTP: \(code)")
-}
-catch {
-    print("L'une des erreurs restantes...")
-}
-```
-Exemple asynchrone :
-
-```swift
-
-notifier.send("Un autre message inutile") {
-    result in
-    
-    switch result {
-    case .success(_):
-        return
-    case .failure(let error):
-    
-        switch error {
-            case .missingParameter:
-                print("Votre message ne serait-il pas vide ?")
-            case .unknown(let code):
-                print("Code d'erreur : \(code)")
-        }
-        
-    }
-}
-```
+Alors, merci Free.
