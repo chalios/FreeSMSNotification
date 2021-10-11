@@ -34,6 +34,7 @@ Une fois l'instance créé, vous aurez la possibilité d'envoyer votre notificat
 La fonction *send()* synchrone est une fonction *throw*. Elle ne renvoie rien mais génère des erreurs s'il y en a. Ces erreurs doivent être gérées dans un do-catch.
 
 Elle prend 2 paramètres, dont 1 optionnel :
+    
     - message : qui est le contenu de la notification
     - timeout : qui est la durée en secondes avant de renoncer à la requête. (Defaut: 0 -> 10 secondes)
     
