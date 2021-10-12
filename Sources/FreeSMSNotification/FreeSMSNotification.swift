@@ -1,6 +1,6 @@
 import Foundation
 
-public class FreeSMSNotification {
+public struct FreeSMSNotification {
     
     // MARK: - Errors enumeration
     public enum Errors: Error {
@@ -68,31 +68,10 @@ public class FreeSMSNotification {
          par un do_catch et traitée par ce dernier.
         */
         
-        // On ajoute le nom de l'application devant le message s'il existe
-        var msg = ""
-        if let appName = appName {
-            msg = "Notification \(appName) :\n\n\(message)"
-        } else {
-            msg = message
-        }
-        
         // On s'assure d'avoir un message qui soit URL encodé
-        guard let message = msg.urlEncoded else {
+        guard let message = prepared(message).urlEncoded else {
             throw Errors.badMsgFormat
         }
-        
-        // On converti la valeur du timeout
-        var realTimeout = 0
-        if timeout == 0 {
-            realTimeout = 10 * 1000
-        } else {
-            realTimeout = timeout * 1000
-        }
-        
-        
-        
-        
-        print("https://smsapi.free-mobile.fr/sendmsg?user=\(id)&pass=\(key)&msg=\(message)")
         
         // On génère l'URL de la requête avec ses paramètres
         let url = URL(string: "https://smsapi.free-mobile.fr/sendmsg?user=\(id)&pass=\(key)&msg=\(message)")!
@@ -108,7 +87,7 @@ public class FreeSMSNotification {
             
             // On vérifie qu'on a pas dépassé le timeout
             let now = Int64(Date.timeIntervalSinceReferenceDate * 1000)
-            if now - start_time >= realTimeout {
+            if now - start_time >= converted(timeout) {
                 // Si c'est le cas, on abandonne et on jette une erreur.
                 task.cancel()
                 throw Errors.requestTimeout
@@ -119,7 +98,7 @@ public class FreeSMSNotification {
         
         // On vérifie s'il y a eu une erreur et on la jette si c'est le cas
         if let response = task.response as? HTTPURLResponse {
-            if let error = convertError(response.statusCode) {
+            if let error = convertedError(response.statusCode) {
                 throw error
             }
         }
@@ -128,16 +107,9 @@ public class FreeSMSNotification {
     // MARK: Asynchronous
     public func send(_ message: String, withCompletionHandler completion: @escaping (Result<Any?, Errors>) -> Void) {
         
-        // On ajoute le nom de l'application devant le message s'il existe
-        var msg = ""
-        if let appName = appName {
-            msg = "Notification \(appName) :\n\n\(message)"
-        } else {
-            msg = message
-        }
         
         // On s'assure d'avoir un message qui soit URL encodé
-        guard let message = msg.urlEncoded else {
+        guard let message = prepared(message).urlEncoded else {
             DispatchQueue.main.async {
                 completion(.failure(.badMsgFormat))
             }
@@ -152,7 +124,7 @@ public class FreeSMSNotification {
             (_, response, _) in
             
             if let response = response as? HTTPURLResponse {
-                if let error = self.convertError(response.statusCode) {
+                if let error = self.convertedError(response.statusCode) {
                     DispatchQueue.main.async {
                         completion(.failure(error))
                     }
@@ -168,7 +140,7 @@ public class FreeSMSNotification {
     
     // MARK: - Helper internal methods
     
-    private func convertError(_ code: Int) -> Errors? {
+    private func convertedError(_ code: Int) -> Errors? {
         switch code {
         case 200:
             return nil
@@ -182,6 +154,24 @@ public class FreeSMSNotification {
             return Errors.serverError
         default:
             return Errors.unknown(statusCode:code)
+        }
+    }
+    
+    private func converted(_ timeout: Int) -> Int {
+        if timeout == 0 {
+            return 10 * 1000
+        } else {
+            return timeout * 1000
+        }
+    }
+    
+    private func prepared(_ message: String) -> String {
+        
+        // On ajoute le nom de l'application devant le message s'il existe
+        if let appName = appName {
+            return "Notification \(appName):\n\n\(message)"
+        } else {
+            return message
         }
     }
 

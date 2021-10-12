@@ -3,11 +3,11 @@ import XCTest
 
 final class FreeSMSNotificationTests: XCTestCase {
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
         
-        if let notifier = FreeSMSNotification(id: "32284532", key: "vLmc1Q4McRTIMs", application: "Tortuga") {
+        let id  = "12345678"        // Entrez ici VOTRE id
+        let key = "abcdefgHIjk79s"  // Et ici VOTRE clé d'API
+        
+        if let notifier = FreeSMSNotification(id: id, key: key, application: "XCTest") {
             notifier.send("Coucou") {
                 result in
                 
