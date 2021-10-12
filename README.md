@@ -137,11 +137,11 @@ Les erreurs sont rassemblées dans l'enum Errors du module :
 
 ```swift
 public enum Errors: Error {
-    case missingParameter          // Il manque un paramètre dans la requête (exemple: message vide)
+    case missingParameter          // Il manque un paramètre dans la requête. (exemple: message vide)
     case sendingTooFast            // Les notifications sont envoyées trop vite. Il y a un anti-flood.
     case authenticationError       // Besoin d'expliquer ?
     case serverError               // Erreur interne au serveur. (Requête mal formée ? Plantage serveur ?...)
-    case badMsgFormat              // Le message ne peut pas être encodé correctement
+    case badMsgFormat              // Le message ne peut pas être encodé correctement.
     case requestTimeout            // Timeout atteint. Requête expirée.
     case unknown(statusCode: Int)  // Erreur non répertoriée/documentée. Renvoie le status_code HTTP.
 }
