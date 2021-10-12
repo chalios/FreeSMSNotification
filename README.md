@@ -1,7 +1,11 @@
 # FreeSMSNotification (Swift version)
 
 ## Installation :
-Ce module est un Swift Package. Il suffit donc de l'ajouter à votre projet directement dans Xcode : `File > Add Package` et d'entrer l'url du repo. /!\ **Veillez à bien choisir la branche *Swift*.** /!\
+Ce module est un Swift Package. 
+
+Il suffit donc de l'ajouter à votre projet directement dans Xcode : `File > Add Package` et d'entrer l'url du dépôt. 
+
+/!\ __Veillez à bien choisir la branche *Swift*.__ /!\
 
 ## Utilisation
 
@@ -64,7 +68,7 @@ do {
 
 ##### Asynchrone
 
-La version asynchrone de *send()* est à la fois similaire et différente. Elle prend toujours 2 arguments, cette fois obligatoires. Mais elle ne *throw* pas. À la place elle renvoie un resultat de type Result à la closure passée en paramètre.
+La version asynchrone de *send()* prend toujours 2 arguments, cette fois obligatoires. Mais elle ne *throw* pas. À la place elle renvoie un resultat de type Result à la closure passée en paramètre.
 
 Voici son prototype :
 
@@ -121,8 +125,8 @@ struct bidule {
             
             
     func method() {
-        // Do something that may want to notify you
-        notify("Your notification")
+        // Faites quelque chose qui mérite une notification
+        notify("Votre notification")
     }
 }
 ```
