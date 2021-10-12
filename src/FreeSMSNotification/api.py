@@ -4,7 +4,7 @@
 ## Imports ---------------------------------------------------------------------
 import requests
 
-from errors import *
+from .errors import *
 ## -----------------------------------------------------------------------------
 
 ## Constantes Internes ---------------------------------------------------------
@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
     user   = raw_input('Veuillez entrer votre identifiant utilisateur > ')
     passwd = raw_input('Et la clé d\'authentification > ')
-    print ''
+    print('')
     msg    = raw_input('Maintenant écrivez un court message à envoyer > ')
 
     notifier = Notifier(user, passwd)
@@ -99,22 +99,22 @@ if __name__ == '__main__':
     try:
         notifier.send(msg)
         sleep(2)
-        print "N'est-ce pas vraiment génial ?"
+        print("N'est-ce pas vraiment génial ?")
 
     except AUTH_ERROR as err:
-        print err.description
+        print(err.description)
 
     except MissingParameter as err:
-        print err.description
+        print(err.description)
 
     except LimitExceeded as err:
-        print err.description
+        print(err.description)
 
     except InternalError as err:
-        print err.description
+        print(err.description)
 
     except UnknownError as err:
-        print err.description
+        print(err.description)
 
 
 ## -----------------------------------------------------------------------------
