@@ -1,12 +1,14 @@
 # FreeSMSNotification (Python)
 Utilisez l'API de notification par SMS de Free Mobile directement avec Python.
 
+# Prérequis
+- Python >= 3.6
+
 # Installation
 + `git clone`
-+ `cd freesmsapi`
-+ `pip install .` ou `python setup.py install`
-
-Si vous utilisez `virtualenv`, assurez-vous que python 2 est utilisé par défaut ou spécifiez `--python=python2` lors de la création de l'environnement virtuel.
++ `cd FreeSMSNotification`
++ `git checkout python`
++ `pip install .`
 
 # Exemple
 ```python
