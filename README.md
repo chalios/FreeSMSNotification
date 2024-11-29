@@ -5,7 +5,7 @@ Utilisez l'API de notification par SMS de Free Mobile directement avec Python.
 - Python >= 3.6
 
 # Installation
-+ `git clone`
++ `git clone https://github.com/chalios/FreeSMSNotification.git`
 + `cd FreeSMSNotification`
 + `git checkout python`
 + `pip install .`
